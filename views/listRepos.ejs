@@ -11,7 +11,7 @@
     var access_token = localStorage.getItem("access_token");
     var visibility = "<%= visibility %>";
     if (access_token) {
-      fetch("http://localhost:3000/api/repos/" + visibility, {
+      fetch("https://github-tasks.herokuapp.com/api/repos/" + visibility, {
         headers: { authorization: access_token },
       })
         .then((result) => {
@@ -57,7 +57,7 @@
       }
       console.log(repos);
       fetch(
-        "http://localhost:3000/api/repos/change/" +
+        "https://github-tasks.herokuapp.com/api/repos/change/" +
           (visibility == "public" ? "private" : "public"),
         {
           method: "POST",

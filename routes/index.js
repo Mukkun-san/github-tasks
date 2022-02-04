@@ -16,7 +16,7 @@ router.get("/", async function (req, res, next) {
           client_id: process.env.GITHUB_CLIENT_ID,
           client_secret: process.env.GITHUB_CLIENT_SECRET,
           code,
-          redirect_uri: "http://localhost:3000/",
+          redirect_uri: "https://github-tasks.herokuapp.com/",
         }),
         headers: {
           "Content-Type": "application/json",
@@ -33,7 +33,7 @@ router.get("/", async function (req, res, next) {
   res.render("index", {
     access_token,
     title: "",
-    href: "https://github.com/login/oauth/authorize?client_id=902dd85739546ddeb6ab&redirect_uri=http://localhost:3000/&scope=repo user",
+    href: "https://github.com/login/oauth/authorize?client_id=902dd85739546ddeb6ab&redirect_uri=https://github-tasks.herokuapp.com/&scope=repo user",
   });
 });
 
