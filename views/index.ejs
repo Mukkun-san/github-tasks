@@ -1,20 +1,21 @@
 <!DOCTYPE html>
 <html>
+  <head>
+    <title><%= title %></title>
+    <link rel="stylesheet" href="/stylesheets/style.css" />
+  </head>
 
-<head>
-  <title>
-    <%= title %>
-  </title>
-  <link rel='stylesheet' href='/stylesheets/style.css' />
-</head>
+  <body>
+    <h1 id="name"><%= title %></h1>
+    <p>Welcome to <%= title %></p>
+    <a href="<%= href %>">authorize</a>
+  </body>
 
-<body>
-  <h1>
-    <%= title %>
-  </h1>
-  <p>Welcome to <%= title %>
-  </p>
-  <a href="<%= href %>">authorize</a>
-</body>
-
+  <% if (access_token) { %>
+  <!-- make user available to script tag -->
+  <% var access_token=access_token %>
+  <script>
+    localStorage.setItem("access_token", "<%= access_token %>");
+  </script>
+  <% } %>
 </html>

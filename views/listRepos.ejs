@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <script>
+    var array = [1, 2];
+    var access_token = localStorage.getItem("access_token");
+    var visibility = "<%= visibility %>";
+    if (access_token) {
+      fetch("http://localhost:3000/api/repos/" + visibility, {
+        headers: { authorization: access_token },
+      })
+        .then((result) => {
+          return result.json();
+        })
+        .then((repos) => {
+          repos.forEach((repo) => {
+            const div = document.createElement("div");
+            div.id = repo.name;
+            div.style.display = "flex";
+            div.style.alignItems = "center";
+            const box = document.createElement("input");
+            box.type = "checkbox";
+            box.name = repo.name;
+            const p = document.createElement("p");
+            p.textContent = repo.name;
+            div.append(box, p);
+            document.getElementById("list").prepend(div);
+          });
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    } else {
+      location.href = "/";
+    }
+  </script>
+  <body>
+    <h1>Listing <%= visibility %> repos</h1>
+    <hr />
+    <form id="list">
+      <input type="submit" value="change visibility" />
+    </form>
+  </body>
+  <script>
+    document.getElementById("list").addEventListener("submit", submit);
+    function submit(e) {
+      e.preventDefault();
+      const formData = new FormData(e.target);
+      const repos = [];
+      for (let [key, value] of formData.entries()) {
+        repos.push(key);
+      }
+      console.log(repos);
+      fetch(
+        "http://localhost:3000/api/repos/change/" +
+          (visibility == "public" ? "private" : "public"),
+        {
+          method: "POST",
+          body: JSON.stringify({ repos }),
+          headers: {
+            authorization: access_token,
+            "content-type": "application/json",
+          },
+        }
+      )
+        .then((result) => {
+          return result.json();
+        })
+        .then((res) => {
+          window.location.reload();
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    }
+  </script>
+</html>
